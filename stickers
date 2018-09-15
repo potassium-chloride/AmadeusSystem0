@@ -1,0 +1,46 @@
+{'emoji': '💪','file_id': 'CAADAgADJgADIQpsC6r4L7hsKlMSAg'}
+{'emoji': '😽','file_id': 'CAADAgADLAADIQpsCy-ljVJHENY1Ag'}
+{'emoji': '🙆','file_id': 'CAADAgADKAADIQpsC9Nrnrp249sYAg'}
+{'emoji': '😐','file_id': 'CAADAgADKgADIQpsC1VIMX3K4jejAg'}
+
+
+{'update_id': 81948416, 'message': {'message_id': 1860, 'from': {'id': 205176061, 'is_bot': False, 'first_name': 'Konstantin', 'last_name': 'Dolgikh', 'username': 'DolgikhKA', 'language_code': 'ru-RU'}, 'chat': {'id': 205176061, 'first_name': 'Konstantin', 'last_name': 'Dolgikh', 'username': 'DolgikhKA', 'type': 'private'}, 'date': 1535495973, 'sticker': {'width': 512, 'height': 512, 'emoji': '🙎', 'set_name': 'KurisuMakise', 'thumb': {'file_id': 'AAQCABPS2YUqAARYxw-mtbGayAZDAAIC', 'file_size': 4236, 'width': 128, 'height': 128}, 'file_id': 'CAADAgADLgADIQpsC_TC4cn8Soo5Ag', 'file_size': 27862}}}
+[01:39:35]: Received: 
+[01:39:38]: len(j)=1
+{'update_id': 81948417, 'message': {'message_id': 1861, 'from': {'id': 205176061, 'is_bot': False, 'first_name': 'Konstantin', 'last_name': 'Dolgikh', 'username': 'DolgikhKA', 'language_code': 'ru-RU'}, 'chat': {'id': 205176061, 'first_name': 'Konstantin', 'last_name': 'Dolgikh', 'username': 'DolgikhKA', 'type': 'private'}, 'date': 1535495975, 'sticker': {'width': 512, 'height': 512, 'emoji': '😄', 'set_name': 'KurisuMakise', 'thumb': {'file_id': 'AAQCABP42IUqAATx4hv8rnLafGQ-AAIC', 'file_size': 4228, 'width': 128, 'height': 128}, 'file_id': 'CAADAgADMAADIQpsCxqd2awrU3rPAg', 'file_size': 29990}}}
+[01:39:39]: Received: 
+HTTP Error 502: Bad Gateway
+[01:39:45]: len(j)=2
+HTTP Error 502: Bad Gateway
+{'update_id': 81948418, 'message': {'message_id': 1862, 'from': {'id': 205176061, 'is_bot': False, 'first_name': 'Konstantin', 'last_name': 'Dolgikh', 'username': 'DolgikhKA', 'language_code': 'ru-RU'}, 'chat': {'id': 205176061, 'first_name': 'Konstantin', 'last_name': 'Dolgikh', 'username': 'DolgikhKA', 'type': 'private'}, 'date': 1535495979, 'sticker': {'width': 512, 'height': 512, 'emoji': '🙄', 'set_name': 'KurisuMakise', 'thumb': {'file_id': 'AAQCABN_54UqAATwP7u9WmYuwUVEAAIC', 'file_size': 5156, 'width': 128, 'height': 128}, 'file_id': 'CAADAgADMgADIQpsC5T2QkENrUMlAg', 'file_size': 38606}}}
+[01:39:45]: Received: 
+[01:39:45]: len(j)=2
+{'update_id': 81948419, 'message': {'message_id': 1863, 'from': {'id': 205176061, 'is_bot': False, 'first_name': 'Konstantin', 'last_name': 'Dolgikh', 'username': 'DolgikhKA', 'language_code': 'ru-RU'}, 'chat': {'id': 205176061, 'first_name': 'Konstantin', 'last_name': 'Dolgikh', 'username': 'DolgikhKA', 'type': 'private'}, 'date': 1535495981, 'sticker': {'width': 512, 'height': 512, 'emoji': '😳', 'set_name': 'KurisuMakise', 'thumb': {'file_id': 'AAQCABM2yYUqAAS--D3nj6vuiTA8AAIC', 'file_size': 5050, 'width': 128, 'height': 128}, 'file_id': 'CAADAgADNAADIQpsC72Malk5ge7-Ag', 'file_size': 32100}}}
+[01:39:46]: Received: 
+[01:39:49]: len(j)=2
+{'update_id': 81948420, 'message': {'message_id': 1864, 'from': {'id': 205176061, 'is_bot': False, 'first_name': 'Konstantin', 'last_name': 'Dolgikh', 'username': 'DolgikhKA', 'language_code': 'ru-RU'}, 'chat': {'id': 205176061, 'first_name': 'Konstantin', 'last_name': 'Dolgikh', 'username': 'DolgikhKA', 'type': 'private'}, 'date': 1535495984, 'sticker': {'width': 512, 'height': 512, 'emoji': '👯', 'set_name': 'KurisuMakise', 'thumb': {'file_id': 'AAQCABNU4YUqAAQ6xwqvFqzoLIFFAAIC', 'file_size': 4124, 'width': 128, 'height': 128}, 'file_id': 'CAADAgADNgADIQpsC4CAE8CDrYriAg', 'file_size': 28158}}}
+[01:39:50]: Received: 
+[01:39:50]: len(j)=2
+{'update_id': 81948421, 'message': {'message_id': 1865, 'from': {'id': 205176061, 'is_bot': False, 'first_name': 'Konstantin', 'last_name': 'Dolgikh', 'username': 'DolgikhKA', 'language_code': 'ru-RU'}, 'chat': {'id': 205176061, 'first_name': 'Konstantin', 'last_name': 'Dolgikh', 'username': 'DolgikhKA', 'type': 'private'}, 'date': 1535495986, 'sticker': {'width': 512, 'height': 512, 'emoji': '😷', 'set_name': 'KurisuMakise', 'thumb': {'file_id': 'AAQCABOz4IUqAAQv015U8Jw68GFDAAIC', 'file_size': 6086, 'width': 128, 'height': 128}, 'file_id': 'CAADAgADOAADIQpsC_OH4MvZp1xLAg', 'file_size': 40066}}}
+[01:39:51]: Received: 
+[01:39:54]: len(j)=1
+{'update_id': 81948422, 'message': {'message_id': 1866, 'from': {'id': 205176061, 'is_bot': False, 'first_name': 'Konstantin', 'last_name': 'Dolgikh', 'username': 'DolgikhKA', 'language_code': 'ru-RU'}, 'chat': {'id': 205176061, 'first_name': 'Konstantin', 'last_name': 'Dolgikh', 'username': 'DolgikhKA', 'type': 'private'}, 'date': 1535495990, 'sticker': {'width': 512, 'height': 512, 'emoji': '😦', 'set_name': 'KurisuMakise', 'thumb': {'file_id': 'AAQCABMP3YUqAATthGzvbK7FaJM_AAIC', 'file_size': 3436, 'width': 128, 'height': 128}, 'file_id': 'CAADAgADOgADIQpsC2RjechdnUfeAg', 'file_size': 17324}}}
+[01:39:55]: Received: 
+[01:39:58]: len(j)=1
+{'update_id': 81948423, 'message': {'message_id': 1867, 'from': {'id': 205176061, 'is_bot': False, 'first_name': 'Konstantin', 'last_name': 'Dolgikh', 'username': 'DolgikhKA', 'language_code': 'ru-RU'}, 'chat': {'id': 205176061, 'first_name': 'Konstantin', 'last_name': 'Dolgikh', 'username': 'DolgikhKA', 'type': 'private'}, 'date': 1535495996, 'sticker': {'width': 512, 'height': 512, 'emoji': '😡', 'set_name': 'KurisuMakise', 'thumb': {'file_id': 'AAQCABMg1IUqAASnV9ECwBWHs0BHAAIC', 'file_size': 3672, 'width': 128, 'height': 128}, 'file_id': 'CAADAgADPAADIQpsC4DqKuZKlUoqAg', 'file_size': 20174}}}
+[01:39:59]: Received: 
+[01:40:02]: len(j)=1
+{'update_id': 81948424, 'message': {'message_id': 1868, 'from': {'id': 205176061, 'is_bot': False, 'first_name': 'Konstantin', 'last_name': 'Dolgikh', 'username': 'DolgikhKA', 'language_code': 'ru-RU'}, 'chat': {'id': 205176061, 'first_name': 'Konstantin', 'last_name': 'Dolgikh', 'username': 'DolgikhKA', 'type': 'private'}, 'date': 1535496000, 'sticker': {'width': 512, 'height': 512, 'emoji': '😎', 'set_name': 'KurisuMakise', 'thumb': {'file_id': 'AAQCABPj14UqAARTahXm4JK5m6BHAAIC', 'file_size': 2326, 'width': 128, 'height': 128}, 'file_id': 'CAADAgADPgADIQpsC2aOLG7Vwdm9Ag', 'file_size': 12582}}}
+[01:40:03]: Received: 
+[01:40:07]: len(j)=1
+{'update_id': 81948425, 'message': {'message_id': 1869, 'from': {'id': 205176061, 'is_bot': False, 'first_name': 'Konstantin', 'last_name': 'Dolgikh', 'username': 'DolgikhKA', 'language_code': 'ru-RU'}, 'chat': {'id': 205176061, 'first_name': 'Konstantin', 'last_name': 'Dolgikh', 'username': 'DolgikhKA', 'type': 'private'}, 'date': 1535496003, 'sticker': {'width': 512, 'height': 512, 'emoji': '🤗', 'set_name': 'KurisuMakise', 'thumb': {'file_id': 'AAQCABNJ5oUqAAReKOL66SA9nf84AAIC', 'file_size': 3162, 'width': 128, 'height': 128}, 'file_id': 'CAADAgADQAADIQpsCxANHREFUIfyAg', 'file_size': 18082}}}
+[01:40:08]: Received: 
+[01:40:11]: len(j)=1
+{'update_id': 81948426, 'message': {'message_id': 1870, 'from': {'id': 205176061, 'is_bot': False, 'first_name': 'Konstantin', 'last_name': 'Dolgikh', 'username': 'DolgikhKA', 'language_code': 'ru-RU'}, 'chat': {'id': 205176061, 'first_name': 'Konstantin', 'last_name': 'Dolgikh', 'username': 'DolgikhKA', 'type': 'private'}, 'date': 1535496007, 'sticker': {'width': 512, 'height': 512, 'emoji': '😇', 'set_name': 'KurisuMakise', 'thumb': {'file_id': 'AAQCABO49oUqAARYYkcmx58Wk1NCAAIC', 'file_size': 3308, 'width': 128, 'height': 128}, 'file_id': 'CAADAgADQgADIQpsC9o-xLlhqGRNAg', 'file_size': 15468}}}
+[01:40:12]: Received: 
+[01:40:15]: len(j)=1
+{'update_id': 81948427, 'message': {'message_id': 1871, 'from': {'id': 205176061, 'is_bot': False, 'first_name': 'Konstantin', 'last_name': 'Dolgikh', 'username': 'DolgikhKA', 'language_code': 'ru-RU'}, 'chat': {'id': 205176061, 'first_name': 'Konstantin', 'last_name': 'Dolgikh', 'username': 'DolgikhKA', 'type': 'private'}, 'date': 1535496015, 'sticker': {'width': 512, 'height': 512, 'emoji': '🙈', 'set_name': 'KurisuMakise', 'thumb': {'file_id': 'AAQCABNi2oUqAAT9s13ay__oyJA7AAIC', 'file_size': 4276, 'width': 128, 'height': 128}, 'file_id': 'CAADAgADRAADIQpsC8ijpW0SKXNmAg', 'file_size': 20012}}}
+[01:40:17]: Received: 
+[01:40:19]: len(j)=1
+{'update_id': 81948428, 'message': {'message_id': 1872, 'from': {'id': 205176061, 'is_bot': False, 'first_name': 'Konstantin', 'last_name': 'Dolgikh', 'username': 'DolgikhKA', 'language_code': 'ru-RU'}, 'chat': {'id': 205176061, 'first_name': 'Konstantin', 'last_name': 'Dolgikh', 'username': 'DolgikhKA', 'type': 'private'}, 'date': 1535496018, 'sticker': {'width': 512, 'height': 512, 'emoji': '😳', 'set_name': 'KurisuMakise', 'thumb': {'file_id': 'AAQCABOn6IUqAARGO8yWKr1wTJc9AAIC', 'file_size': 3576, 'width': 128, 'height': 128}, 'file_id': 'CAADAgADRgADIQpsCy0lY_2z_rSTAg', 'file_size': 18104}}}
+[01:40:20]: Received:

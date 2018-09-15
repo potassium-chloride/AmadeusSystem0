@@ -1,0 +1,49 @@
+<html>
+<head>
+<link rel="shortcut icon" href="xp2.png" />
+<title>AmadeusSystem</title>
+<meta charset="UTF-8"/>
+</head>
+<body style="overflow:hidden;background:url('images/bg1.png') #333">
+<div id="bgtxt" style="position:absolute;top:0px;left:0px;width:100%;height:100%;padding:10px;color:rgba(200,200,200,0.25)">HELLO<br>WORLD</div>
+<div id="splash0" style="text-align:center;"><img id="splash" src="images/logo1.png" style="height:100%;"></div>
+<div id="kurisu0" style="display:none;text-align:center;"><img id="kurisu" src="images/kurisu_happy1.png" style="position:relative;top:7%;height:95%;"></div>
+<script>
+splashnum=1;
+mood="happy";
+document.body.onload=function(){
+	splashtimer=setInterval(function(){
+		splashnum++;
+		document.getElementById("splash").src="images/logo"+Math.min(splashnum,39)+".png";
+		if(splashnum==40){clearInterval(splashtimer);}
+	},50);//Понтовая анимация-приветствие с надписью "Amadeus"
+};
+
+function hideSplash(){//Меняет надпись Amadeus на Курису
+	document.getElementById("splash0").style.display="none";
+	document.getElementById("kurisu0").style.display="block";
+}
+
+saytimer=0;
+saynum=0;
+endsaynum=0;
+function saying(t){
+	saynum=0;
+	endsaynum=t/80;
+	saytimer=setInterval(function(){
+		saynum++;
+		if(saynum>endsaynum){
+			clearInterval(saytimer);
+			document.getElementById("kurisu").src="images/kurisu_"+mood+"1.png";
+		}else document.getElementById("kurisu").src="images/kurisu_"+mood+Math.floor(Math.random()*2+1)+".png";
+	},80);
+}
+
+function setMood(m){
+	mood=m;
+	document.getElementById("kurisu").src="images/kurisu_"+mood+"1.png";
+}
+
+</script>
+</body>
+</html>
