@@ -1,5 +1,7 @@
 # AmadeusSystem0
-Prototype of Amadeus from Steins;Gate 0 world
+Prototype of Amadeus from Steins;Gate 0 world.
+
+
 This is test branch with Amadeus System bot which imitate Makise Kurise.
 It has a lot of problems but I believe that I'll solve it.
 Now, you can try to set tokens in file APIkeys.py
