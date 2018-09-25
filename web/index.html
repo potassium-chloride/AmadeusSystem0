@@ -11,15 +11,43 @@
 <script>
 splashnum=1;
 mood="happy";
+servername="http://localhost:6205/"
+
+errlevel=0;
+
+function updateState(){//Связывается с сервером и исполняет обновление. Warn: несекьюрно
+	script = document.createElement('script'); 
+	script.onerror=function(){
+		errlevel++;
+		if(errlevel>3){
+			clearInterval(mainlooptimer);
+			if(errlevel==3)alert("Потеряна связь с сервером!");
+		}
+	}
+	script.onload=function(){
+		errlevel=Math.max(0,errlevel-1)
+	}
+	script.src=servername; 
+	document.getElementsByTagName("head")[0].appendChild(script); 
+}
+
+var mainlooptimer=0;
+
 document.body.onload=function(){
 	splashtimer=setInterval(function(){
 		splashnum++;
 		document.getElementById("splash").src="images/logo"+Math.min(splashnum,39)+".png";
-		if(splashnum==40){clearInterval(splashtimer);}
+		if(splashnum==40){
+			clearInterval(splashtimer);
+			//Теперь можно запрашивать у сервера данные
+			mainlooptimer=setInterval(updateState,150);
+		}
 	},50);//Понтовая анимация-приветствие с надписью "Amadeus"
 };
-
+var isHideSplash=false;
 function hideSplash(){//Меняет надпись Amadeus на Курису
+	if(isHideSplash)return;
+	isHideSplash=true;
 	document.getElementById("splash0").style.display="none";
 	document.getElementById("kurisu0").style.display="block";
 }
@@ -38,10 +66,30 @@ function saying(t){
 		}else document.getElementById("kurisu").src="images/kurisu_"+mood+Math.floor(Math.random()*2+1)+".png";
 	},80);
 }
+var isSaying=false;
+var saytimer2=0;
+function startSay(){
+	if(isSaying)return;
+	isSaying=true;
+	saytimer2=setInterval(function(){
+		document.getElementById("kurisu").src="images/kurisu_"+mood+Math.floor(Math.random()*2+1)+".png";
+	},80);
+}
+function stopSay(){
+	if(!isSaying)return;
+	isSaying=false;
+	clearInterval(saytimer2);
+	document.getElementById("kurisu").src="images/kurisu_"+mood+"1.png";
+}
 
 function setMood(m){
 	mood=m;
 	document.getElementById("kurisu").src="images/kurisu_"+mood+"1.png";
+}
+
+function setLogs(s){
+	document.getElementById("bgtxt").innerHTML=s[0]+"<br>";
+	for(i=1;i<s.length;i++)document.getElementById("bgtxt").innerHTML+=s[i]+"<br>";
 }
 
 </script>

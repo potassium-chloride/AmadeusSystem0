@@ -1,5 +1,8 @@
 import subprocess,re,threading
 import speech_recognition as sr
+import time
+def ttt():
+	return time.strftime("[%H:%M:%S]: ")
 
 reg0=re.compile('\w*[\w\-\']\w*')#re.compile('\w\w*')
 def str2arr(txt):
@@ -33,8 +36,8 @@ def bgListener():
 		dur=len(audiodata.frame_data)/audiodata.sample_rate/audiodata.sample_width
 		if(dur>maxduration):
 			audiodata.frame_data=audiodata.frame_data[-maxduration*audiodata.sample_rate*audiodata.sample_width:]
-			print("Patch big audio")
-		print("Knock")
+#			print("Patch big audio")
+#		print("Knock")
 		if(isGetSpeech):
 			print("Stop")
 			isGetSpeech=False
@@ -42,10 +45,6 @@ def bgListener():
 			print("Recognized")
 			if(score>0.5):onSpeech(txt)
 			isGetSpeech=False
-
-t = threading.Thread(target=bgListener)
-t.daemon = True
-t.start()#Теперь он будет слушать в фоне
 
 def getSpeech():#Возвращает распознанную строку. Произвольный текст лучше распознавать гуглом
 	global recognizer,microphone,audiodata
@@ -57,10 +56,19 @@ def getSpeech():#Возвращает распознанную строку. П�
 		conf=0.7
 		try:conf=result['alternative'][0]['confidence']#Фиг знает, почему это поле не всегда существует
 		except:pass
-		return result['alternative'][0]['transcript'],conf
+		tmpres=result['alternative'][0]['transcript']
+		tmparr=tmpres.split(" ")
+		tmpres=""
+		for i in range(min(len(tmparr),2)):
+			if(tmparr[i].count("уриц")==1):tmparr[i]="Курису"
+		if(tmparr[0]=="Курису"):tmparr.pop(0)
+		for i in tmparr:
+			tmpres+=i+" "
+		return tmpres[:-1],conf
 	except Exception as e:
-		print(e)
-		print(result)
+		pass
+#		print(e)
+#		print(result)
 	return "",0
 
 reg0=re.compile('\w\w*')
@@ -71,13 +79,16 @@ def str2arr(txt):
 def onspeechstub(s):
 	print(s)
 
-onSpeech=onspeechstub
+onSpeech=onspeechstub#Функция, которой передаётся распознанная речь
 
-#Sphinx Speech Recognition
+#Sphinx Speech Recognition, пути к файлам надо патчить
 #sphinxcmd='pocketsphinx_continuous -inmic yes -hmm zero_ru.cd_cont_4000 -dict lm_train.txt.dic -lm lm_train.txt.lm -samprate 16000 2>/dev/null'
-sphinxcmd='pocketsphinx_continuous -inmic yes -hmm zero_ru.cd_cont_4000 -dict ru-kurisu.dic -lm ru-kurisu-min.lm -samprate 16000 2>/dev/null'
+sphinxcmd='pocketsphinx_continuous -inmic yes -hmm zero_ru.cd_cont_4000 -dict ru-kurisu.dic -lm ru-kurisu-min.lm -samprate 16000'# 2>/dev/null'
 def mainloop():
 	global isGetSpeech
+	t = threading.Thread(target=bgListener)
+	t.daemon = True
+	t.start()#Теперь он будет слушать в фоне
 	proc=subprocess.Popen(sphinxcmd,shell=True,stdout=subprocess.PIPE)
 	isStart=False
 	while proc.poll() is None:
@@ -95,4 +106,16 @@ def mainloop():
 		elif(len(arr)>=1 and arr[0] in ['кристина','курису','ассистентка','ассистент','амадей','амадеус']):
 			print("Listen...")
 			isGetSpeech=True
+
+def mainloopAgressive():
+	global microphone,audiodata,isGetSpeech
+	while(True):
+		with microphone as source:
+			audiodata = recognizer.listen(source)
+		dur=len(audiodata.frame_data)/audiodata.sample_rate/audiodata.sample_width
+		if(dur>maxduration):
+			audiodata.frame_data=audiodata.frame_data[-maxduration*audiodata.sample_rate*audiodata.sample_width:]
+		txt,score=getSpeech()
+		print(ttt()+"Recognized")
+		if(score>0.5):onSpeech(txt)
 

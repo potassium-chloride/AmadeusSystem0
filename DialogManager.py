@@ -40,12 +40,14 @@ dialAdapters=[]#Хранит адапетры диалогов
 logD("Load Kurisu dialog adapter")
 kurisu=pa.getAnswerByFile2("data/kurisu.preprocessed")#Чувствителен к чётным/нечётным строкам. Будет неудобно, если вдруг Амадей ответит не за свою роль
 dialAdapters.append(kurisu)
+kurisuAddon=pa.getAnswerByFile2("data/addons.preprocessed")#Тут мои фантазии
+dialAdapters.append(kurisuAddon)
 logD("Load general dialog adapter")
 gener=pa.getAnswerByFile("data/general.preprocessed")
 dialAdapters.append(gener)
-logD("Load trubot dialog adapter")
-trubot=pa.getAnswerByFile("data/trubot.preprocessed")
-dialAdapters.append(trubot)
+#logD("Load trubot dialog adapter")
+#trubot=pa.getAnswerByFile("data/trubot.preprocessed")
+#dialAdapters.append(trubot)
 logD("Load subs")
 subsadapt=pa.getAnswerByFile("data/subs.preprocessed")
 dialAdapters.append(subsadapt)
@@ -55,15 +57,23 @@ def fixTxtIfNeed(txt):
 	arr=utils.str2arr(txt)
 	for w in arr:
 		if(not utils.getStartForm(w) in utils.dictionw):
+			logD("Ask Ya.Speller...")
 			return utils.checkText(txt)
 	return txt
 
-def getAnsswerByDialsit(cont,dialsit):#Ответ по всем адаптерам и knowledger
+def getAnsswerByDialsit(cont,dialsit,localdial=None):#Ответ по всем адаптерам и knowledger
 	global dialAdapters#TODO: Раcпараллелить
 	answers=[]
 	answersscore=[]
 	for adapt in dialAdapters:
 		sc,ans=adapt.getAnswerByDial(dialsit)
+		answers.append(ans)
+		answersscore.append(sc)
+		if(sc>0.85):#Достаточно точное совпадение
+			debuginfo="\nРассматриваемые варианты: "+str(answers)+"\n"+str(answersscore)
+			return sc,ans,debuginfo
+	if(localdial!=None):
+		sc,ans=localdial.getAnswerByDial(dialsit)
 		answers.append(ans)
 		answersscore.append(sc)
 		if(sc>0.85):#Достаточно точное совпадение
@@ -75,10 +85,14 @@ def getAnsswerByDialsit(cont,dialsit):#Ответ по всем адаптера
 
 class Dialog():
 	privScore=0.1#Какая уверенность для ответа в личной беседе
-	pubScore=0.7#Какая уверенность для ответа в беседе с несколькими участниками
+	pubScore=0.8#Какая уверенность для ответа в беседе с несколькими участниками
 	lastCall=-1
 	isAnswered=True#Тут опасный баг! UPD: Теперь нет вроде
 	t1=0
+	localdial=None
+	isWasNotPrivate=False
+	timePar0=0.05
+	timePar1=0.05
 	def __repr__(self):
 		tmp=self.__ident
 		if(type(tmp)!=str):tmp=str(tmp)
@@ -92,6 +106,9 @@ class Dialog():
 		self.__debuginfo=""
 		self.__lastsent=""#Последнее отправленное сообщение
 		self.dialsit=['\n','\n'].copy()#Последние несколько фраз, более 5 точно нет смысла
+		tmps=self.__ident
+		if(type(tmps)!=str):tmps=str(tmps)
+		self.localdial=pa.getAnswerByFileAutolearn("data/localdials/dial"+tmps+".preprocessed")
 	def sendAnswer(self,txt,isClear=False):#Если isClear=True, то сообщение отправляется сразу и без проверок
 		if(txt==""):
 			self.isAnswered=False
@@ -126,7 +143,7 @@ class Dialog():
 			if(i=="/pause" or i=="" or i=="/typing"):#просто пауза
 				time.sleep(0.25)
 				continue
-			sleepytime=0.05+0.05*len(i)
+			sleepytime=self.timePar0+self.timePar1*len(i)
 			time.sleep(min(sleepytime,5))#отправка статуса о наборе соообщения обычно 5 секунд (например, в Телеграме)
 			while(sleepytime>5):
 				self.__typef(self.__ident)
@@ -149,7 +166,9 @@ class Dialog():
 		if(self.lastCall>0 and time.time()-self.lastCall>1000):
 			logD("Clear dial situation (a lot time)")
 			self.dialsit=['\n','\n'].copy()
+		if(not self.isWasNotPrivate):self.isWasNotPrivate=not isPrivate
 		self.lastCall=time.time()
+		txt=txt.replace("/pause","pause")#Давно надо было этот баг убрать...
 		txt=fixTxtIfNeed(txt)#Позря старается не обращаться к Яндекс.Спеллеру
 		self.__debuginfo=""
 		self.__debuginfo+="\nТекст: \""+txt+"\""
@@ -164,12 +183,19 @@ class Dialog():
 		if(len(self.__context)>10):self.__context=self.__context[-10:]
 		self.__debuginfo+="\nТекущий контекст: "+str(self.__context)
 		#Тело
-		if(self.isAnswered):self.dialsit.append(txt)
+		if(self.isAnswered or not isPrivate):self.dialsit.append(txt)
 		else:self.dialsit[-1]+="/pause "+txt
 		if(len(self.dialsit)>4):self.dialsit=self.dialsit[-4:]#Рассматриваются 4 последних фразы диалога
 		self.__debuginfo+="\nТекущий dialsit: "+str(self.dialsit)
-		msc,ans,dbg=getAnsswerByDialsit(self.__context,self.dialsit)#Непосредственно получение ответа
+		msc,ans,dbg=getAnsswerByDialsit(self.__context,self.dialsit,self.localdial)#Непосредственно получение ответа
 		self.__debuginfo+=dbg
+		if(self.isWasNotPrivate):#Добавить текущую строку
+			self.localdial.diallines.append(pa.dialline(txt))
+			if(len(self.localdial.diallines)>4000):self.localdial.diallines=self.localdial.diallines[-4000:]
+			if(msc>self.pubScore):#Типа дропаут
+				tmpdl=pa.dialline(ans)
+				self.localdial.diallines.append(tmpdl)
+				self.localdial.diallines.append(tmpdl)
 		if(msc>self.pubScore or (msc>self.privScore and isPrivate)):
 			self.sendAnswer(ans)
 			return
@@ -187,3 +213,9 @@ def getDialogById(ident,context=[],sendfunction=sendfstub,typefunction=typefstub
 	dialogs.append(Dialog(context,ident,sendfunction,typefunction))
 	dialogids.append(ident)
 	return dialogs[-1]
+
+def updateLocalDials():
+	logD("Сохранение...")
+	for d in dialogs:
+		d.localdial.updateSource()
+	logD("Сохранено")

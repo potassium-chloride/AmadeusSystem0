@@ -154,7 +154,10 @@ def buildPreprocessedFile(fin,fout):
 
 def line2dict(s):
 	s=s.replace("\t","").replace("\n","").replace("\"","\\\"").replace("'","\"")
-	return json.loads(s)
+	try:
+		return json.loads(s)
+	except:
+		return eval(s)
 
 def comparePhrases(p1,p2):#Для отладки
 	dl1=dialline(p1)
@@ -168,7 +171,7 @@ tmppp=0
 
 def weightFunction(k):
 #	print(k)
-	return math.exp(k*1.5)#Характеризует, как долго бот будет помнить дилог, из-за моих кривых ручонок требуем роста функции, а не затухания
+	return math.exp(k*1.7)#Характеризует, как долго бот будет помнить дилог, из-за моих кривых ручонок требуем роста функции, а не затухания
 
 class getAnswerByFile():
 	diallines=[]
@@ -200,7 +203,72 @@ class getAnswerByFile():
 		weights=weightFunction(dial_l-1)
 		for i in range(dial_l-2,-1,-1):
 			weights+=weightFunction(i)
-		logD(str(weights))
+#		logD(str(weights))
+		for pos in range(len(self.diallines)-dial_l+1):
+			summ=weightFunction(dial_l-1)*self.diallines[pos+dial_l-1].compareWithMe(dialarr[dial_l-1],faster=True)
+			if(summ<maxval_2):continue#Дальнейшая проверка не имеет смысла: не перегонит... Наверное
+			for i in range(dial_l-2,-1,-1):#С последней фразы начинаем поиск
+				summ+=weightFunction(i)*self.diallines[pos+i].compareWithMe(dialarr[i],faster=True)
+			if(summ>=maxval):
+				maxvalarr.append(summ)
+				maxposarr.append(pos)
+				maxval=summ
+				maxval_2=maxval/(dial_l+1)
+		newmaxvalarr=[]
+		newmaxposarr=[]
+		tmpmaxval=0.8*maxval#Самое долгое уже позади, можно расслабиться
+		for k in range(len(maxvalarr)):
+			if(maxvalarr[k]>tmpmaxval):
+				newmaxvalarr.append(maxvalarr[k])
+				newmaxposarr.append(maxposarr[k])#По-хорошему, устроить ещё одну проверку при faster=False, но пофиг
+		if(len(newmaxposarr)==0):return 0,""
+		tmpp=random.randrange(len(newmaxposarr))
+		score=newmaxvalarr[tmpp]/weights
+		ind=newmaxposarr[tmpp]+dial_l
+		if(ind>=len(self.diallines)):return score,""
+		return score,self.diallines[ind].orig
+
+class getAnswerByFileAutolearn():
+	diallines=[]
+	source=""
+	def __init__(self,fname):#fname -- уже обработанный файл
+		self.source=fname
+		self.diallines=[].copy()#Потому что реализация ООП в Питоне -- то ещё минное поле! Fuck u, bitch object!
+		try:
+			fl=open(fname,'r')
+			lns=fl.readlines()
+			fl.close()
+			for i in lns:
+				try:
+					t=line2dict(i)
+					self.diallines.append(dialline(t))
+				except Exception as e:
+					logD(e)
+					logD(i)
+		except Exception as e:
+			logD("Warn: не удалось загрузить файл \""+self.source+"\", игнорируется")
+	def updateSource(self):
+		logD("Запись изменений в \""+self.source+"\"...")
+		fl=open(self.source,"w")
+		for i in self.diallines:
+			fl.write(str(i)+"\n")
+		fl.close()
+		logD("\""+self.source+"\" обновлён")
+	def __repr__(self):
+		return "<Phrase Compare Autolearn -> "+self.source+">"
+	def getAnswerByDial(self,arr):#arr -- массив фраз в диалоге. Метод пытается продолжить его
+		dialarr=[]
+		for i in arr:
+			dialarr.append(dialline(i))
+		maxval=0
+		maxval_2=0
+		maxvalarr=[]
+		maxposarr=[]
+		dial_l=len(dialarr)
+		weights=weightFunction(dial_l-1)
+		for i in range(dial_l-2,-1,-1):
+			weights+=weightFunction(i)
+#		logD(str(weights))
 		for pos in range(len(self.diallines)-dial_l+1):
 			summ=weightFunction(dial_l-1)*self.diallines[pos+dial_l-1].compareWithMe(dialarr[dial_l-1],faster=True)
 			if(summ<maxval_2):continue#Дальнейшая проверка не имеет смысла: не перегонит... Наверное
@@ -255,7 +323,7 @@ class getAnswerByFile2():#Тоже самое, только считается, 
 		weights=weightFunction(dial_l-1)
 		for i in range(dial_l-2,-1,-1):
 			weights+=weightFunction(i)
-		logD(str(weights))
+#		logD(str(weights))
 		for pos in range(len(self.diallines)-dial_l+1):
 			if( (pos+dial_l)%2==0 ):continue#Через строку
 			summ=weightFunction(dial_l-1)*self.diallines[pos+dial_l-1].compareWithMe(dialarr[dial_l-1],faster=True)

@@ -23,7 +23,7 @@ token=APIkeys.tgToken
 offset=-2
 
 def hotplugKurisu():
-	dm.kurisu=dm.GetAnswerFromFile("data/kurisuphrases")
+	dm.kurisu=dm.GetAnswerFromFile("data/kurisu.preprocessed")
 	sendMsg(205176061,"Выполнено")
 
 def bashExec(q):
@@ -38,7 +38,7 @@ def sendMsg(peer,text,ttl=10):
 		return		
 	time.sleep(0.2)
 	try:
-		getJSON(api_url+"/sendMessage.php?token="+token+"&peer="+str(peer)+"&text"+urllib.parse.urlencode([("",text.replace("\n","\r\n"))]))
+		getJSON(api_url+"/sendMessage.php?token="+token+"&peer="+peer+"&text"+urllib.parse.urlencode([("",text.replace("\n","\r\n"))]))
 	except Exception as e:
 		sendMsg(peer,text,ttl=ttl-1)
 		print(e)
@@ -62,16 +62,16 @@ def sendSticker(peer,ttl=10):
 		if(ttl<0):
 			print("Too many calls")
 			return
-		getJSON(api_url+"/sendSticker.php?token="+token+"&peer="+str(peer)+"&disable_notification=1&sticker="+random.choice(['CAADAgAD-wADxx0jA2H_bs8eWmg2Ag','CAADAgAD5wADxx0jAz4NLs1Vl8AjAg','CAADAgAD-QADxx0jA3Ys-h31PxSVAg','CAADAgAD7QADxx0jA19EaPUogWpwAg']))
+		getJSON(api_url+"/sendSticker.php?token="+token+"&peer="+peer+"&disable_notification=1&sticker="+random.choice(['CAADAgAD-wADxx0jA2H_bs8eWmg2Ag','CAADAgAD5wADxx0jAz4NLs1Vl8AjAg','CAADAgAD-QADxx0jA3Ys-h31PxSVAg','CAADAgAD7QADxx0jA19EaPUogWpwAg']))
 	except Exception as e:
 		print(e)
 		sendSticker(peer,ttl=ttl-1)
 
-sendSticker(205176061)
+sendSticker("205176061")
 
 def sendTypingStatus(peer):
 	try:
-		getJSON(api_url+"/sendChatAction.php?token="+token+"&peer="+str(peer)+"&action=typing")
+		getJSON(api_url+"/sendChatAction.php?token="+token+"&peer="+peer.replace("_tg","")+"&action=typing")
 	except Exception as e:
 		print(e)
 
@@ -112,7 +112,8 @@ def recognizePicture(fid):
 print(ttt()+"Start!")
 
 def sendf(t,i):
-	print(str(i)+"<-"+t)
+	i=i.replace("_tg","")
+	print(i+"<-"+t)
 	if(random.random()>0.5 and t in ["А как же я?","А про меня забыли?","Мне скучно(","Хэй!/pauseМеня не существует что ли?!"]):
 		sendSticker(i)
 	sendMsg(i,t)
@@ -125,6 +126,7 @@ while True:
 	try:
 		j=getUpdates(offset)
 	except KeyboardInterrupt:
+		dm.updateLocalDials()
 		sys.exit(0)
 	except Exception as e:
 		print(e)
@@ -145,7 +147,7 @@ while True:
 				print(i)
 			peer=i['message']['chat']['id']
 			if(peer>0):
-				sendTypingStatus(peer)
+				sendTypingStatus(str(peer))
 			try:
 				txt=i['message']['text']
 			except:
@@ -186,15 +188,27 @@ while True:
 				hotplugKurisu()
 			if(peer==205176061 and txt.count("Выполнить: ")>0):
 				try:
-					exec("res="+txt.replace("Выполнить: ","").replace("\n",""))
+					res=eval(txt.replace("Выполнить: ","").replace("\n",""))
 					if(type(res)==type(None)):
-						sendMsg(205176061,"Выполнено")
+						sendMsg("205176061","Выполнено")
 					elif(type(res)==str):
-						sendMsg(205176061,res)
+						sendMsg("205176061",res)
 					else:
-						sendMsg(205176061,str(res))
+						sendMsg("205176061",str(res))
 				except Exception as exc:
-					sendMsg(205176061,"Error: "+exc)
+					sendMsg("205176061","Error: "+str(exc))
+				continue
+			if(peer==205176061 and txt.count("Прими код управления: ")>0):
+				try:
+					res=eval(txt.replace("Прими код управления: ","").replace("\n",""))
+					if(type(res)==type(None)):
+						sendMsg("205176061","Выполнено")
+					elif(type(res)==str):
+						sendMsg("205176061",res)
+					else:
+						sendMsg("205176061",str(res))
+				except Exception as exc:
+					sendMsg("205176061","Error: "+str(exc))
 				continue
 			if(txt.count("Курису")+txt.count("Макисэ")+txt.count("Макисе")+txt.count("Ассистент")+txt.count("Асистент")+txt.count("Амадеус")>0):
 				isPrivate=True
@@ -206,7 +220,7 @@ while True:
 				txt=lastrec
 			else:
 				lastrec=txt
-			dm.getDialogById(peer,sendfunction=sendf,typefunction=sendTypingStatus).getAnswer(txt,"",isPrivate=isPrivate)
+			dm.getDialogById("_tg"+str(peer),sendfunction=sendf,typefunction=sendTypingStatus).getAnswer(txt,"",isPrivate=isPrivate)
 		except Exception as e:
 			print(e)
 	if(random.random()<0.000545):

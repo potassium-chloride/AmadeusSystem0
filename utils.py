@@ -272,6 +272,7 @@ def wordInfo_wiki(w):
 
 def wordInfo(w):#Получить подробную информацию по слову
 	w=w.lower()#TODO: Переписать на*** заново!
+	w=w.replace("'","-")#Фикс бага в словаре
 	global dictionw,dictioni
 	if(w in dictionw):
 		return dictioni[dictionw.index(w)]
@@ -354,6 +355,7 @@ def checkText(s):
 			s=s[:pos]+s[pos:int(pos+l*1.5)].replace(fr,to)+s[int(pos+l*1.5):]#Test this place carefully
 	except Exception as e:
 		logD("YaSpeller error: "+str(e))
+	logD("Ya.Speller:"+s)
 	return s
 
 def entoru(q):
